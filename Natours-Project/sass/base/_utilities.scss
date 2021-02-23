@@ -2,9 +2,21 @@
 
 .u-margin-bottom-very-small { margin-bottom: .8rem !important; }
 .u-margin-bottom-small { margin-bottom: 1.5rem !important; }
-.u-margin-bottom-lil-medium { margin-bottom: 3rem !important; }
+.u-margin-bottom-lil-medium { 
+  margin-bottom: 3rem !important;
+
+  @include respond(tab-port) {
+    margin-bottom: 3rem;
+  }
+}
 .u-margin-bottom-medium { margin-bottom: 4rem !important; }
-.u-margin-bottom-big { margin: 8rem !important; }
+.u-margin-bottom-big { 
+  margin: 8rem !important;
+
+  @include respond(tab-port) {
+    margin-bottom: 5rem;
+  }
+}
 
 .u-margin-top-big { margin: 8rem !important; }
 .u-margin-top-huge { margin: 10rem !important; }
