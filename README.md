@@ -1,9 +1,8 @@
 # **Courses Projects**
-## *Projetos com design e conceitos desenvolvidos por instrutores, reproduzidos e executados, por mim, para aprendizado técnico e prático.*
+## *Projetos, com conceitos e design desenvolvidos por instrutores, reproduzidos e executados por mim, com a finalidade de aprendizado técnico e prático.*
 
-## Bootcamps:
-### *Jonas Schmedtmann*:
-#### The Complete JavaScript Course 2021 ↓
+## Cursos e Bootcamps:
+### The Complete JavaScript Course 2021 (*Jonas Schmedtmann*) ↓
 
 [Projeto Guess My Number](https://guess-my-number-tiago.netlify.app/)
 
@@ -14,7 +13,7 @@
 ![](img/pig-game.png)
 
 
-Advanced CSS and Sass: Flexbox, Grid, Animations and More! ↓
+### Advanced CSS and Sass: Flexbox, Grid, Animations and More! (*Jonas Schmedtmann*) ↓
 
 [Projeto Natours](https://natours-tiago.netlify.app/)
 
