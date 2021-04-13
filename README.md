@@ -1,5 +1,5 @@
 # **Courses Projects**
-## *Projetos desenvolvidos por cursos, reproduzidos e executados para aprendizado.*
+## *Projetos com design e conceitos desenvolvidos por instrutores, reproduzidos e executados, por mim, para aprendizado técnico e prático.*
 
 ## Bootcamps:
 ### *Jonas Schmedtmann*:
