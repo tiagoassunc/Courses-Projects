@@ -76,7 +76,11 @@ body {
 .user-nav {
   align-self: stretch;
   display: flex;
-  align-items: center; }
+  align-items: center;
+  /*  &__user {
+  } */
+  /* &__user-name {
+  } */ }
   .user-nav > * {
     padding: 0 2rem;
     cursor: pointer;
@@ -153,6 +157,12 @@ body {
   text-align: center;
   padding: 2.5rem; }
 
+.gallery {
+  display: flex; }
+  .gallery__photo {
+    width: 100%;
+    display: block; }
+
 .container {
   max-width: 120rem;
   margin: 8rem auto;
@@ -180,6 +190,6 @@ body {
   justify-content: space-between; }
 
 .hotel-view {
-  background-color: orangered;
+  background-color: blue;
   height: 80rem;
   flex: 1; }
