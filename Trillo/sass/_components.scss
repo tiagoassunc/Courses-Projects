@@ -205,3 +205,38 @@
     display: block;
   }
 }
+
+/////////////////////////////////////////////////////////////
+// HOTEL OVERVIEW
+
+.overview {
+  display: flex;
+
+  &__heading {
+  }
+
+  &__stars {
+    //flex: 1;
+    margin-right: auto; // creat espace between stars and location without scratch stars box
+    //background-color: orangered;
+  }
+
+  &__icon-star,
+  &__icon-location {
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: var(--color-primary);
+  }
+
+  &__location {
+  }
+
+  &__rating {
+  }
+
+  &__rating-average {
+  }
+
+  &__rating-count {
+  }
+}
