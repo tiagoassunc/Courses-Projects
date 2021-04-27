@@ -306,3 +306,85 @@
     box-shadow: none;
   }
 }
+
+/////////////////////////////////////////////////////////////
+// PARAGRAPH
+
+.paragraph:not(:last-of-type) {
+  //Aplly to all but not to the last of this type
+  margin-bottom: 2rem;
+}
+
+/////////////////////////////////////////////////////////////
+// LIST
+.list {
+  list-style: none;
+  margin: 3rem 0;
+  padding: 3rem 0;
+  border-top: var(--line);
+  border-bottom: var(--line);
+
+  display: flex;
+  flex-wrap: wrap; // To put elements to a new line, wrap them
+
+  &__item {
+    flex: 0 0 50%; // To put just two per line, changing width to 50% of line space
+    margin-bottom: 0.7rem;
+    display: flex;
+    align-items: center;
+  }
+
+  &__item::before {
+    // Including svg directly on css
+
+    content: ''; // Must include this 4 to a pseudo element works
+    display: inline-block;
+    // Decrase or increase svg because of mask-size property
+    height: 1rem;
+    width: 1rem;
+
+    margin: 0.7rem;
+
+    // Old browsers
+    // background-image: url(../img/chevron-thin-right.svg); // - Getting out of sass folder / going to img folder / then svg icon
+    // background-size: cover;
+
+    // Newer browsers - masks
+    background-color: var(--color-primary);
+    mask-image: url(../img/chevron-thin-right.svg);
+    -webkit-mask-image: url(../img/chevron-thin-right.svg);
+    mask-size: cover;
+    -webkit-mask-size: cover;
+  }
+}
+
+/////////////////////////////////////////////////////////////
+// RECOMMEND
+
+.recommend {
+  font-size: 1.3rem;
+  color: var(--color-dark-light-3);
+
+  display: flex;
+  align-items: center;
+
+  &__count {
+    margin-right: auto; // Separe all the way to the right text and photos
+  }
+
+  &__friends {
+  }
+
+  &__photo {
+    box-sizing: content-box; // Make the border sum with height a width set
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    border: 3px solid #fff; // Making border look tranparent
+
+    &:not(:last-child) {
+      // Make the photo overlap each other a bit, but the last one
+      margin-right: -1.15rem;
+    }
+  }
+}
