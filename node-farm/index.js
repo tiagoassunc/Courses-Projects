@@ -5,6 +5,10 @@ const url = require("url");
 //////////////////////////////////////////////////////////////////////////////////////////////
 /// SERVER
 
+// synchronous way => executed once => save data => don't have to be read each request
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const dataObj = JSON.parse(data); // Json data
+
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
@@ -12,10 +16,13 @@ const server = http.createServer((req, res) => {
     res.end("This is the OVERVIEW");
   } else if (pathName === "/product") {
     res.end("This is the PRODUCT");
+  } else if (pathName === "/api") {
+    res.writeHead(200, { "Content-type": "application/json" }); // Status Return on console and Network => OK, type json
+    res.end(data); // Just return the Json data saved
   } else {
-    // Status Return on console and Network
     res.writeHead(404, {
-      // And header - SEt allways before response
+      // Status Return on console and Network => Not found, type html
+      // And header => SET allways before response
       "Content-type": "text/html",
       "my-own-header": "hello-world",
     });
@@ -34,7 +41,7 @@ server.listen(8000, "127.0.0.1", () => {
 /* const textIn = fs.readFileSync("./txt/input.txt", "utf-8"); // Function to read files
 console.log(textIn);
 const textOut = `This is what we know about avocado ${textIn}. \n Creat on ${Date.now()}`;
-fs.writeFileSync("./txt/output.txt", textOut); // Creat a file with texOut data
+fs.writeFileSync("./txt/output.txt", textOut); // Creat a file with texOut data 
 console.log("File written!"); */
 
 // Non Blocking, asynchronous way - Run behind without blocking code
