@@ -90,6 +90,27 @@ const calDisplayBalance = function (movements) {
 };
 calDisplayBalance(account1.movements);
 
+// CHAINING Methods
+const calDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, cur) => acc + cur, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const outcomes = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, cur) => acc + cur, 0);
+  labelSumOut.textContent = `${Math.abs(outcomes)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter(interest => interest > 1) // Just interests > 1
+    .reduce((acc, cur) => acc + cur, 0);
+  labelSumInterest.textContent = `${Math.abs(interest)}€`;
+};
+calDisplaySummary(account1.movements);
+
 // MAP Method
 // Computing Usernames
 // Using map to creat a new array
