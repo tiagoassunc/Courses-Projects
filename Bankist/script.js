@@ -168,7 +168,6 @@ btnTransfer.addEventListener('click', function (e) {
   const receiverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
-  console.log(amount, receiverAcc);
 
   inputTransferAmount.value = inputTransferTo.value = ''; // Clean input
 
@@ -185,4 +184,30 @@ btnTransfer.addEventListener('click', function (e) {
     // Updating displayed informations
     updateUI(currentAccount);
   }
+});
+
+// FINDINDEX Method => delete account
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+
+    console.log(index);
+
+    // Delete account
+    accounts.splice(index, 1); // Because => removing 1 element, end
+
+    // Hide UI
+    containerApp.style.opacity = 0; // Log out => hide login
+  }
+
+  inputCloseUsername.value = inputClosePin.value = ''; // Clean input
+
+  labelWelcome.textContent = 'Log in to get started';
 });
