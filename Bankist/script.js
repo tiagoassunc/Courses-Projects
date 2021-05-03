@@ -61,7 +61,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-// Creat DOM Elements
+// Creat DOM Elements => Creating movimentes rows
 const displayMovements = function (movements) {
   containerMovements.innerHTML = '';
   // .textContent = 0
@@ -74,47 +74,43 @@ const displayMovements = function (movements) {
           <div class="movements__type 
           movements__type--${type}">${i + 1} ${type}</div>
           <div class="movements__date">3 days ago</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
         </div>
     `;
 
     containerMovements.insertAdjacentHTML('beforeend', html);
   });
 };
-displayMovements(account1.movements);
 
-// REDUCE method
+// REDUCE method => calc of balance
 const calDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance}€`;
 };
-calDisplayBalance(account1.movements);
 
-// CHAINING Methods
-const calDisplaySummary = function (movements) {
-  const incomes = movements
+// CHAINING Methods => calc in, out and interest
+const calDisplaySummary = function (acc) {
+  const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, cur) => acc + cur, 0);
   labelSumIn.textContent = `${incomes}€`;
 
-  const outcomes = movements
+  const outcomes = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, cur) => acc + cur, 0);
   labelSumOut.textContent = `${Math.abs(outcomes)}€`;
 
-  const interest = movements
+  const interest = acc.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * acc.interestRate) / 100)
     .filter(interest => interest > 1) // Just interests > 1
     .reduce((acc, cur) => acc + cur, 0);
   labelSumInterest.textContent = `${Math.abs(interest)}€`;
 };
-calDisplaySummary(account1.movements);
 
-// MAP Method
-// Computing Usernames
-// Using map to creat a new array
+// MAP Method => Creating Usernames
 const creatUserNames = function (accs) {
+  // Using map to creat a new array
   // Using for each to loop over an array and do something
   accs.forEach(function (acc) {
     acc.username = acc.owner
@@ -125,4 +121,37 @@ const creatUserNames = function (accs) {
   });
 };
 creatUserNames(accounts);
-console.log(accounts);
+
+// FIND method => User login
+let currentAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault(); // Prevent the form to submit => prevent page to reload
+
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  ); // Compare input name with an account name
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // currentAccount?.pin, Using OPTIONAL CHAINING
+
+    // Display UI and message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+    containerApp.style.opacity = 1;
+
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = ''; // Assingnment operator => work right to left
+    inputLoginPin.blur(); // Lose the focous =>
+
+    // Display movements
+    displayMovements(currentAccount.movements);
+
+    // Display balance
+    calDisplayBalance(currentAccount.movements);
+
+    // Display summary
+    calDisplaySummary(currentAccount);
+  }
+});
