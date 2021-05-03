@@ -39,10 +39,10 @@ const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8"); // Jso
 const dataObj = JSON.parse(data); // Object Json data
 
 const server = http.createServer((req, res) => {
-  const pathName = req.url;
+  const { query, pathname } = url.parse(req.url, true); // Destructuring {query, pathname}
 
   // OVERVIEW PAGE
-  if (pathName === "/" || pathName === "/overview") {
+  if (pathname === "/" || pathname === "/overview") {
     res.writeHead(200, { "Content-type": "text/html" });
 
     const cardsHtml = dataObj
@@ -53,11 +53,15 @@ const server = http.createServer((req, res) => {
     res.end(output);
 
     // PRODUCT PAGE
-  } else if (pathName === "/product") {
-    res.end("This is the PRODUCT");
+  } else if (pathname === "/product") {
+    res.writeHead(200, { "Content-type": "text/html" });
+    const product = dataObj[query.id];
+    const output = replaceTemplate(tempProduct, product);
+
+    res.end(output);
 
     // API
-  } else if (pathName === "/api") {
+  } else if (pathname === "/api") {
     res.writeHead(200, { "Content-type": "application/json" }); // Status Return on console and Network => OK, type json
     res.end(data); // Just return the Json data saved
 
