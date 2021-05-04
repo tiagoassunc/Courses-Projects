@@ -384,14 +384,14 @@
 
   &__photo {
     box-sizing: content-box; // Make the border sum with height a width set
-    height: 4rem;
-    width: 4rem;
+    height: 4.2rem;
+    width: 4.2rem;
     border-radius: 50%;
     border: 3px solid #fff; // Making border look tranparent
 
     &:not(:last-child) {
       // Make the photo overlap each other a bit, but the last one
-      margin-right: -1.15rem;
+      margin-right: -1.5rem;
     }
   }
 }
@@ -455,5 +455,77 @@
     color: var(--color-grey-light-2);
     font-family: sans-serif;
     z-index: 1;
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////// CALL TO ACTION
+.cta {
+  padding: 3.5rem 0;
+  text-align: center;
+
+  &__book-now {
+    font-size: 2rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////// CALL TO ACTION
+
+.btn {
+  font-size: 1.5rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  border-radius: 100px;
+  border: none;
+  background-image: linear-gradient(
+    to right,
+    var(--color-primary-light),
+    var(--color-primary-dark)
+  );
+  color: #fff;
+  position: relative;
+  overflow: hidden; // Desappear content overflowing
+  cursor: pointer;
+
+  & > * {
+    //All select childs
+    display: inline-block;
+    height: 100%; // To have height and width of parent element
+    width: 100%;
+    transition: all 0.2s;
+  }
+
+  &__visible {
+    padding: 2rem 7.5rem;
+  }
+
+  &__invisible {
+    position: absolute;
+    padding: 2rem 0; // Need to be 0 to give text space enought
+    left: 0;
+    top: -100%; // Move up exactly the size of the element
+  }
+
+  &:hover {
+    background-image: linear-gradient(
+      to right,
+      var(--color-primary-dark),
+      var(--color-primary-light)
+    );
+  }
+
+  &:hover &__visible {
+    transform: translateY(100%);
+  }
+
+  &:hover &__invisible {
+    top: 0;
+  }
+
+  &:focus {
+    outline: none;
+    animation: pulsate 1s infinite;
   }
 }
