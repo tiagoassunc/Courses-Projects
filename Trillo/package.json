@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "scss": "node-sass sass/main.scss css/style.css -w",
     "live-server": "live-server",
-    "npm-run-all": "npm-run-all --parallel live-server scss"
+    "start": "npm-run-all --parallel live-server scss"
   },
   "author": "Tiago Assunção",
   "license": "ISC",
