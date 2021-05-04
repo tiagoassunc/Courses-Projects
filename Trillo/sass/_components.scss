@@ -267,7 +267,7 @@
 }
 
 /////////////////////////////////////////////////////////////
-// HOTEL OVERVIEW
+// HOTEL OVERVIEW BTN
 .btn-inline {
   border: none;
   color: var(--color-primary);
@@ -279,8 +279,18 @@
   cursor: pointer;
   transition: all 0.2s;
 
+  & span {
+    // Show all btn
+    margin-left: 3px;
+  }
+
   &:hover {
     color: var(--color-grey-dark-1);
+
+    span {
+      margin-left: 8px;
+      transition: margin-left 0.2s;
+    }
   }
 
   &:focus {
@@ -372,9 +382,6 @@
     margin-right: auto; // Separe all the way to the right text and photos
   }
 
-  &__friends {
-  }
-
   &__photo {
     box-sizing: content-box; // Make the border sum with height a width set
     height: 4rem;
@@ -386,5 +393,67 @@
       // Make the photo overlap each other a bit, but the last one
       margin-right: -1.15rem;
     }
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////// REVIEWS
+
+.review {
+  background-color: #fff;
+  box-shadow: var(--shadow-light);
+  padding: 3rem;
+  margin-bottom: 3.5rem;
+
+  overflow: hidden; // To contetnt don't overflow the box
+  position: relative; // To use position absolutein before element
+
+  &__text {
+    margin-bottom: 2rem;
+    z-index: 10;
+    position: relative; // Nedd be set to use z index
+  }
+
+  &__user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__photo {
+    height: 4.5rem;
+    width: 4.5rem;
+    border-radius: 50%;
+    margin-right: 1.2rem;
+  }
+
+  &__user-box {
+    margin-right: auto;
+  }
+
+  &__user-name {
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  &__user-date {
+    color: var(--color-grey-dark-2);
+  }
+
+  &__rating {
+    font-size: 2.3rem;
+    color: var(--color-primary);
+  }
+
+  // Adding background quotation
+  &::before {
+    content: '\201C';
+    position: absolute;
+    top: -2rem;
+    left: -1rem;
+    line-height: 1; // text line height
+    font-size: 20rem;
+    color: var(--color-grey-light-2);
+    font-family: sans-serif;
+    z-index: 1;
   }
 }

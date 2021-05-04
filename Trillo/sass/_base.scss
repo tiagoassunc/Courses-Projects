@@ -44,5 +44,9 @@ body {
     var(--color-primary-light),
     var(--color-primary-dark)
   );
+
+  // Correcting the background
   background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
