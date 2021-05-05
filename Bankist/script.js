@@ -247,4 +247,7 @@ labelBalance.addEventListener('click', function () {
     el => Number(el.textContent.replace('€', ''))
   );
   console.log(movementUI);
+
+  const movementUI2 = [...document.querySelectorAll('.movements__value')];
+  console.log(movementUI2);
 });
