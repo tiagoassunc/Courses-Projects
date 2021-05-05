@@ -62,11 +62,13 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // Creat DOM Elements => Creating movimentes rows
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
   // .textContent = 0
 
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
@@ -227,4 +229,13 @@ btnClose.addEventListener('click', function (e) {
   inputCloseUsername.value = inputClosePin.value = ''; // Clean input
 
   labelWelcome.textContent = 'Log in to get started';
+});
+
+let sorted = false; // Creat to unsort if it got another click
+// SORT => sorting arrays if sort button was clicked
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault;
+
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted; // Transfor next click in false => go to normal sort
 });
