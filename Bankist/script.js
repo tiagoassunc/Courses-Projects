@@ -105,8 +105,16 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-// Function of display and format dates
+// FUNCTIONS => DON'T REPEAT YOURSELF /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const formatCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+};
+
+// Function of display and format dates
 const formatMovementsDate = function (date, locale) {
   const calcDaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
@@ -140,12 +148,14 @@ const displayMovements = function (acc, sort = false) {
     const date = new Date(acc.movementsDates[i]);
     const displayDate = formatMovementsDate(date, acc.locale);
 
+    const formattedMov = formatCur(mov, acc.locale, acc.currency);
+
     const html = `
     <div class="movements__row">
           <div class="movements__type 
           movements__type--${type}">${i + 1} ${type}</div>
           <div class="movements__date">${displayDate}</div>
-          <div class="movements__value">${mov.toFixed(2)}€</div>
+          <div class="movements__value">${formattedMov}</div>
         </div>
     `;
 
@@ -156,7 +166,10 @@ const displayMovements = function (acc, sort = false) {
 // REDUCE method => calc of balance
 const calDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0); // Creating balance at current acoounts
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+
+  const formattedMov = formatCur(acc.balance, acc.locale, acc.currency);
+
+  labelBalance.textContent = `${formattedMov}`;
 };
 
 // CHAINING Methods => calc in, out and interest
@@ -164,19 +177,19 @@ const calDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, cur) => acc + cur, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  labelSumIn.textContent = formatCur(incomes, acc.locale, acc.currency);
 
-  const outcomes = acc.movements
+  const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, cur) => acc + cur, 0);
-  labelSumOut.textContent = `${Math.abs(outcomes).toFixed(2)}€`;
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency);
 
   const interest = acc.movements
     .filter(mov => mov > 0)
     .map(deposit => (deposit * acc.interestRate) / 100)
     .filter(interest => interest > 1) // Just interests > 1
     .reduce((acc, cur) => acc + cur, 0);
-  labelSumInterest.textContent = `${Math.abs(interest.toFixed(2))}€`;
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
 };
 
 // MAP Method => Creating Usernames
@@ -202,6 +215,8 @@ const updateUI = function (acc) {
 
   calDisplaySummary(acc); // Display summary
 };
+
+// FUNCTIONS END /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // FIND method => User login
 let currentAccount;
