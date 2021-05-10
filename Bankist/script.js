@@ -107,7 +107,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // Function of display and format dates
 
-const formatMovementsDate = function (date) {
+const formatMovementsDate = function (date, locale) {
   const calcDaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
@@ -117,12 +117,12 @@ const formatMovementsDate = function (date) {
   if (daysPassed === 0) return 'Today';
   if (daysPassed === 1) return 'Yesterday';
   if (daysPassed <= 7) return `${daysPassed} days ago`;
-  else {
-    const day = `${date.getDate()}`.padStart(2, '0');
-    const month = `${date.getMonth() + 1}`.padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
+  // const day = `${date.getDate()}`.padStart(2, '0');
+  // const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  // const year = date.getFullYear();
+  // return `${day}/${month}/${year}`;
+
+  return new Intl.DateTimeFormat(locale).format(date);
 };
 
 // Creat DOM Elements => Creating movimentes rows
@@ -138,7 +138,7 @@ const displayMovements = function (acc, sort = false) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const date = new Date(acc.movementsDates[i]);
-    const displayDate = formatMovementsDate(date);
+    const displayDate = formatMovementsDate(date, acc.locale);
 
     const html = `
     <div class="movements__row">
@@ -223,13 +223,24 @@ btnLogin.addEventListener('click', function (e) {
     containerApp.style.opacity = 1;
 
     // DATES => Current date and time
+    // API
     const now = new Date();
-    const day = `${now.getDate()}`.padStart(2, '0');
-    const month = `${now.getMonth() + 1}`.padStart(2, '0');
-    const year = now.getFullYear();
-    const hours = `${now.getHours()}`.padStart(2, '0');
-    const minutes = `${now.getMinutes()}`.padStart(2, '0');
-    labelDate.textContent = `${day}/${month}/${year}, ${hours}:${minutes}`;
+    const options = {
+      // Object configs for intl api
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'numeric', // long, numeric, 2-digit
+      year: 'numeric',
+      //weekday: 'long', // short, narrow
+    };
+    // const locale = navigator.language; // User local
+    // console.log(locale);
+
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(now);
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = ''; // Assingnment operator => work right to left
@@ -268,7 +279,7 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Add transfer date
     currentAccount.movementsDates.push(new Date().toISOString());
-    receiverAcc.movements.push(new Date().toString());
+    receiverAcc.movementsDates.push(new Date().toString());
 
     // Updating displayed informations
     updateUI(currentAccount);
