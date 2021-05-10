@@ -216,10 +216,38 @@ const updateUI = function (acc) {
   calDisplaySummary(acc); // Display summary
 };
 
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    // In each call, print the remaining time to UI
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // When 0 seconds, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+
+    // Decrease 1s
+    time--;
+  };
+
+  // Set time to 5 minute
+  let time = 120;
+
+  // Call the timer every second
+  tick(); // Calling the function to change time after time to get rid of delay
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
+
 // FUNCTIONS END /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // FIND method => User login
-let currentAccount;
+let currentAccount, timer;
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault(); // Prevent the form to submit => prevent page to reload
@@ -261,15 +289,19 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = ''; // Assingnment operator => work right to left
     inputLoginPin.blur(); // Lose the focous =>
 
+    // Timer
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
+
     // Display informations
     updateUI(currentAccount);
   }
 });
 
 // FAKE ALWAYS LOGGED
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 // => Transfer implement
 btnTransfer.addEventListener('click', function (e) {
@@ -298,6 +330,10 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Updating displayed informations
     updateUI(currentAccount);
+
+    // Reset the timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -308,16 +344,22 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    //Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // Creating a time to aprove loan
+      //Add movement
+      currentAccount.movements.push(amount);
 
-    // Add loan date
-    currentAccount.movementsDates.push(new Date().toISOString());
+      // Add loan date
+      currentAccount.movementsDates.push(new Date().toISOString());
 
-    //Update UI
-    updateUI(currentAccount);
+      //Update UI
+      updateUI(currentAccount);
+
+      // Reset the timer
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }, 2500);
   }
-
   inputLoanAmount.value = '';
 });
 
