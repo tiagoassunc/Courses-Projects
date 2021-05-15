@@ -65,6 +65,32 @@ btnScrollTo.addEventListener('click', function (e) {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
+// Event Delegation: Implementing Page Navigation
+/* document.querySelectorAll('.nav__link').forEach(function (el) {
+  el.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const id = this.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+ */
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  // console.log(e.target); // Where event happens
+  e.preventDefault();
+
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    // console.log('link');
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
 // Lectures /////////////////////////////////////////////////////////////////////
 
 /* ///// Selecting Elements /////
@@ -172,7 +198,7 @@ setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000); // Removi
 
 //// Event Propagation: Bubbling and Capturing ////
 
-const randomInt = (min, max) =>
+/* const randomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 const randomColor = () =>
   `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
@@ -200,4 +226,4 @@ document.querySelector('.nav').addEventListener(
     console.log('NAV', e.target, e.currentTarget);
   },
   true // Listing event travel down the dom NOT bubbling
-);
+); */
