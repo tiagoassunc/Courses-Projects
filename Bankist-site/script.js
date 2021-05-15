@@ -149,3 +149,23 @@ logo.classList.contains('c');
 
 // Don't use
 logo.className = 'Tiago'; */
+
+//// Types of Events and Event Handlers ////
+
+const h1 = document.querySelector('h1');
+
+const alertH1 = function (e) {
+  // Mouse hover event
+  alert('addEventListener: Great you are reading the heading :)');
+
+  // h1.removeEventListener('mouseenter', alertH1); // Removing event after 1 occur
+};
+
+h1.addEventListener('mouseenter', alertH1);
+
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000); // Removing event after a time
+
+// old way to listen to events
+// h1.onmouseenter = function (e) {
+//   alert('addEventListener: Great you are reading the heading');
+// };
