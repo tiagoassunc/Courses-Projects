@@ -152,7 +152,7 @@ logo.className = 'Tiago'; */
 
 //// Types of Events and Event Handlers ////
 
-const h1 = document.querySelector('h1');
+/* const h1 = document.querySelector('h1');
 
 const alertH1 = function (e) {
   // Mouse hover event
@@ -163,9 +163,41 @@ const alertH1 = function (e) {
 
 h1.addEventListener('mouseenter', alertH1);
 
-setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000); // Removing event after a time
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000); // Removing event after a time */
 
 // old way to listen to events
 // h1.onmouseenter = function (e) {
 //   alert('addEventListener: Great you are reading the heading');
 // };
+
+//// Event Propagation: Bubbling and Capturing ////
+
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+console.log(0, 255);
+
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  e.preventDefault();
+  this.style.backgroundColor = randomColor();
+  console.log('LINK', e.target, e.currentTarget);
+  console.log(e.currentTarget === this);
+
+  // Stop propagation
+  // e.stopPropagation();
+});
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  this.style.backgroundColor = randomColor();
+  console.log('CONTAINER', e.target, e.currentTarget);
+});
+document.querySelector('.nav').addEventListener(
+  'click',
+  function (e) {
+    e.preventDefault();
+    this.style.backgroundColor = randomColor();
+    console.log('NAV', e.target, e.currentTarget);
+  },
+  true // Listing event travel down the dom NOT bubbling
+);
