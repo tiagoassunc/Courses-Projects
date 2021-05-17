@@ -91,7 +91,33 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+// Building tab components
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab'); // Get btn always => if clicked on the btn or on the span get operations__tab closest
+
+  // Guard clause
+  if (!clicked) return; // If its nth clicked fish the function => need to be before
+
+  // Remove active classes
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+
+  // Active tab
+  clicked.classList.add('operations__tab--active');
+
+  // Active content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active'); // dataset - Just .part after data => .tab
+});
+
+///////////////////////////////////////////////////////////////////////////
 // Lectures /////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 /* ///// Selecting Elements /////
 console.log(document.documentElement);
@@ -228,7 +254,7 @@ document.querySelector('.nav').addEventListener(
   true // Listing event travel down the dom NOT bubbling
 ); */
 
-//// DOM Traversing  ////
+/* //// DOM Traversing  ////
 const h1 = document.querySelector('h1');
 
 // Going downwards: child
@@ -257,3 +283,4 @@ console.log(h1.parentElement.children); // How acess all siblings
 [...h1.parentElement.children].forEach(function (el) {
   if (el !== h1) el.style.transform = 'scale(0.5)';
 });
+ */
