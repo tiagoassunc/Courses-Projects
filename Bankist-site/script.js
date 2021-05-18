@@ -150,13 +150,34 @@ nav.addEventListener('mouseout', function (e) {
 }); */
 
 //// Implementing a Sticky Navigation: The Scroll Event ////
-const initialCoords = section1.getBoundingClientRect();
+/* const initialCoords = section1.getBoundingClientRect();
 window.addEventListener('scroll', function (e) {
   console.log(window.scrollY);
 
   if (window.screenY > initialCoords.top) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
+}); */
+
+//// A Better Way: The Intersection Observer API - Implementing a Sticky Navigation ////
+
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height; // Interesting font of infos nav.getBoundingClientRect()
+console.log(navHeight);
+
+const stickyNav = function (entries) {
+  const [entry] = entries; // [entry] = entry[0] => must to be be entry 0 in this case
+  // console.log(entry);
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`, // margin box aplly outside target element
 });
+headerObserver.observe(header);
 
 ///////////////////////////////////////////////////////////////////////////
 // Lectures /////////////////////////////////////////////////////////////////////
@@ -326,4 +347,17 @@ console.log(h1.parentElement.children); // How acess all siblings
 [...h1.parentElement.children].forEach(function (el) {
   if (el !== h1) el.style.transform = 'scale(0.5)';
 });
+ */
+
+//// A Better Way: The Intersection Observer API ////
+/* const obsCallback = function (entries, observer) {
+  entries.forEach(entry => console.log(entry));
+};
+
+const obsOptions = {
+  root: null, // target intersecting root  (null entire viewport)
+  threshold: [0, 0.2], // intersecting at threshold in (%) => 0 every time te taget get out of view or enter in view
+};
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(section1); // section = target
  */
