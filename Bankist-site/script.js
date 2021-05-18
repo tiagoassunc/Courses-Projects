@@ -121,7 +121,8 @@ tabsContainer.addEventListener('click', function (e) {
 //// Passing Arguments to Event Handlers ////
 // Menu fade animation
 const handleHover = function (e) {
-  console.log(this);
+  //console.log(this, e.target);
+
   if (e.target.classList.contains('nav__link')) {
     const link = e.target;
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
@@ -147,6 +148,15 @@ nav.addEventListener('mouseout', handleHover.bind(1)); // THIS VARIABLE ARE SET 
 nav.addEventListener('mouseout', function (e) {
   handleHover(e, 1);
 }); */
+
+//// Implementing a Sticky Navigation: The Scroll Event ////
+const initialCoords = section1.getBoundingClientRect();
+window.addEventListener('scroll', function (e) {
+  console.log(window.scrollY);
+
+  if (window.screenY > initialCoords.top) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+});
 
 ///////////////////////////////////////////////////////////////////////////
 // Lectures /////////////////////////////////////////////////////////////////////
