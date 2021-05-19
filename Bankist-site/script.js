@@ -183,7 +183,7 @@ headerObserver.observe(header);
 const allSelections = document.querySelectorAll('.section');
 
 const revealSection = function (entries, observer) {
-  const [entry] = entries; // Get just the section that we are = target
+  const [entry] = entries; // Just one threshold - Get just the section that we are = target
   // console.log(entry);
 
   if (!entry.isIntersecting) return;
@@ -200,6 +200,34 @@ allSelections.forEach(function (section) {
   sectionObserver.observe(section); // Adding observer to all classes
   section.classList.add('section--hidden'); // Hidden before scroll all sections
 });
+
+//// Lazy Loading Images ////
+const imgTaregts = document.querySelectorAll('img[data-src]'); // Selecting all images with property of data-src
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries; // Just one threshold
+  console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  // Replace src with data-src
+  entry.target.src = entry.target.dataset.src;
+  // entry.target.classList.remove('lazy-img'); // Do not use bacause blur can be removed before img loads
+
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  rootMargin: '200px', // To load before threshold hold be load
+});
+
+imgTaregts.forEach(img => imgObserver.observe(img));
 
 ///////////////////////////////////////////////////////////////////////////
 // Lectures /////////////////////////////////////////////////////////////////////
