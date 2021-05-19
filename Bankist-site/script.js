@@ -162,7 +162,7 @@ window.addEventListener('scroll', function (e) {
 
 const header = document.querySelector('.header');
 const navHeight = nav.getBoundingClientRect().height; // Interesting font of infos nav.getBoundingClientRect()
-console.log(navHeight);
+// console.log(navHeight);
 
 const stickyNav = function (entries) {
   const [entry] = entries; // [entry] = entry[0] => must to be be entry 0 in this case
@@ -178,6 +178,28 @@ const headerObserver = new IntersectionObserver(stickyNav, {
   rootMargin: `-${navHeight}px`, // margin box aplly outside target element
 });
 headerObserver.observe(header);
+
+//// Revealing Elements on Scroll ////
+const allSelections = document.querySelectorAll('.section');
+
+const revealSection = function (entries, observer) {
+  const [entry] = entries; // Get just the section that we are = target
+  // console.log(entry);
+
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target); // Stop observer after all: ;
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null, // watching viewport
+  threshold: 0.1, // At 10%
+});
+
+allSelections.forEach(function (section) {
+  sectionObserver.observe(section); // Adding observer to all classes
+  section.classList.add('section--hidden'); // Hidden before scroll all sections
+});
 
 ///////////////////////////////////////////////////////////////////////////
 // Lectures /////////////////////////////////////////////////////////////////////
