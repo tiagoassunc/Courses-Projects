@@ -1,5 +1,5 @@
 # **Courses Projects**
-## *Projetos, com conceitos e design desenvolvidos por instrutores, reproduzidos e executados por mim, com a finalidade de aprendizado técnico e prático.*
+## *Projects, with concepts and design developed by instructors, reproduced and executed by me, for the purpose of technical and practical learning.*
 
 ## Cursos e Bootcamps:
 ### The Complete JavaScript Course 2021 (*Jonas Schmedtmann*) ↓
