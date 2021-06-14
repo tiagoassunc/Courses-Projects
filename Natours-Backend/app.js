@@ -2,6 +2,7 @@ const fs = require('fs');
 const { request } = require('express');
 const express = require('express');
 
+//Creating server
 const app = express();
 
 // Get the body of request
@@ -19,6 +20,29 @@ app.get('/api/v1/tours', (req, res) => {
     results: tours.length,
     data: {
       tours: tours,
+    },
+  });
+});
+
+//// Responding to URL Parameters ////
+app.get('/api/v1/tours/:id', (req, res) => {
+  // : to parameters or ? to optional parameters
+  console.log(req.params);
+  const id = req.params.id * 1;
+  const tour = tours.find((el) => el.id === id);
+
+  if (!tour) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'invalid ID',
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: {
+      tour,
     },
   });
 });
