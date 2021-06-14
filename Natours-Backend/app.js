@@ -5,6 +5,17 @@ const express = require('express');
 //Creating server
 const app = express();
 
+//// Creating Our Own Middleware ////
+app.use((req, res, netx) => {
+  console.log('Hello from middleware ✨');
+  netx(); // Must call
+});
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
+
 // Get the body of request
 app.use(express.json());
 
@@ -13,19 +24,19 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-//// Handling GET Requests ////
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
+  console.log(req.requestTime);
   res.status(200).json({
     status: 'success',
+    requestAt: req.requestTime,
     results: tours.length,
     data: {
       tours: tours,
     },
   });
-});
+};
 
-//// Responding to URL Parameters ////
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
   // : to parameters or ? to optional parameters
   console.log(req.params);
   const id = req.params.id * 1;
@@ -45,10 +56,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour,
     },
   });
-});
+};
 
-//// Handling POST Requests ////
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req, res) => {
   // console.log(req.body);
 
   const newId = tours[tours.length - 1].id + 1;
@@ -72,10 +82,9 @@ app.post('/api/v1/tours', (req, res) => {
       });
     }
   );
-});
+};
 
-//// Handling PATCH Requests ////
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
   if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -87,10 +96,9 @@ app.patch('/api/v1/tours/:id', (req, res) => {
     status: 'sucess',
     data: { tour: '<Update tour>' },
   });
-});
+};
 
-//// Handling DELET Requests ////
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
   if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -102,7 +110,27 @@ app.delete('/api/v1/tours/:id', (req, res) => {
     status: 'sucess',
     data: null,
   });
-});
+};
+
+//// Handling GET Requests ////
+// app.get('/api/v1/tours', getAllTours);
+//// Handling POST Requests ////
+// app.post('/api/v1/tours', createTour);
+
+//// Responding to URL Parameters ////
+// app.get('/api/v1/tours/:id', getTour);
+//// Handling PATCH Requests ////
+// app.patch('/api/v1/tours/:id', updateTour);
+//// Handling DELET Requests ////
+// app.delete('/api/v1/tours/:id', deleteTour);
+
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
+
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 const port = 3000;
 app.listen(port, () => {
