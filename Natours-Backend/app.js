@@ -10,7 +10,6 @@ const app = express();
 
 //Middleware
 app.use(morgan('dev')); // Return in cl HTTP req header
-
 app.use(express.json()); // Get the body of request
 
 //// Creating Our Own Middleware ////
