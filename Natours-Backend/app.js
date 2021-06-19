@@ -9,8 +9,13 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 
 //Middleware
-app.use(morgan('dev')); // Return in cl HTTP req header
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev')); // Return in cl HTTP req header
+}
 app.use(express.json()); // Get the body of request
+
+//// Serving Static Files //// ⬇
+// app.use(express.static(`${__dirname}/public`));
 
 //// Creating Our Own Middleware ////
 app.use((req, res, netx) => {
