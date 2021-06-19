@@ -4,8 +4,32 @@ const fs = require('fs');
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
-
 // Route Handlers
+
+//Param Middleware callback func - for previous check ID validation
+exports.checkID = (req, res, next, value) => {
+  console.log(`Tour is ${value}`);
+
+  if (req.params.id * 1 > tours.length) {
+    // Need to return to function stops and don't => next() = error more than 1 res
+    return res.status(404).json({
+      status: 'fail',
+      message: 'invalid ID',
+    });
+  }
+  next(); // To not stop Middleware
+};
+
+exports.checkBody = (req, res, next) => {
+  if (!req.body.price || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Bad request: Missing name or price',
+    });
+  }
+  next();
+};
+
 exports.getAllTours = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -67,13 +91,6 @@ exports.createTour = (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'invalid ID',
-    });
-  }
-
   res.status(200).json({
     status: 'sucess',
     data: { tour: '<Update tour>' },
@@ -81,13 +98,6 @@ exports.updateTour = (req, res) => {
 };
 
 exports.deleteTour = (req, res) => {
-  if (req.params.id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'invalid ID',
-    });
-  }
-
   res.status(204).json({
     status: 'sucess',
     data: null,
