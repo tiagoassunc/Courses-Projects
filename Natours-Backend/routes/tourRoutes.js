@@ -11,7 +11,7 @@ const router = express.Router();
 router
   .route('/')
   .get(tourController.getAllTours)
-  .post(tourController.checkBody, tourController.createTour); // Chaining Multiple Middleware Functions
+  .post(tourController.createTour); // Chaining Multiple Middleware Functions
 
 router
   .route('/:id')
