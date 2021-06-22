@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 ////  Environment Variables ////
+dotenv.config({ path: './config.env' });
+
 const app = require('./app');
 
-dotenv.config({ path: './config.env' });
 // console.log(process.env); // Deafault node applications environmental
 
 // Connecting Atlas DB with mongoose
