@@ -31,6 +31,27 @@ exports.getAllTours = async (req, res) => {
       query = query.sort('-createdAt');
     }
 
+    // 3) Field limit
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields); // Projecting
+    } else {
+      query = query.select('-__v'); // Excluding V field
+    }
+
+    // 4) Pagination
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 1 || 100;
+    const skip = (page - 1) * limit;
+
+    // page=2&limit=10, 1-10, page 1, 10-20, page 2 ...
+    query = query.skip(skip).limit(limit);
+
+    if (req.query.page) {
+      const numTours = await Tour.countDocuments();
+      if (skip >= numTours) throw Error('This page does not exist');
+    }
+
     // Mongo DB {difficulty: 'easy', duration: {$gte: 5}}
     // { difficulty: 'easy', sort: '1', limit: '10', duration: { gte: '5' } }
     // gte, gt, lte, lt
