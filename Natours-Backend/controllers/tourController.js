@@ -6,20 +6,44 @@ exports.getAllTours = async (req, res) => {
   try {
     //// Making the API Better: Filtering ////
     // BUILD QUERY
+
+    // 1A) Filtering
     const queryObj = { ...req.query }; // Creating new object
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
 
-    const query = Tour.find(queryObj);
+    // 1B) Advanced filtering
+    let queryString = JSON.stringify(queryObj);
+    queryString = queryString.replace(
+      /\b(gte|gt|lte|lt)\b/g,
+      (match) => `$${match}`
+    ); // \b = exactly words g = multiple times
+    console.log(JSON.parse(queryString));
+    let query = Tour.find(JSON.parse(queryString));
+
+    // 2) Sorting //// Making the API Better: Sorting ////
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      console.log(sortBy);
+      query = query.sort(sortBy);
+      // sort('price ratingsAverage') moongose depper sort
+    } else {
+      query = query.sort('-createdAt');
+    }
+
+    // Mongo DB {difficulty: 'easy', duration: {$gte: 5}}
+    // { difficulty: 'easy', sort: '1', limit: '10', duration: { gte: '5' } }
+    // gte, gt, lte, lt
+
+    // EXECUTE QUERY
+
+    const tours = await Tour.find(query);
 
     // const tours =  Tour.find()
     //   .where('duration')
     //   .equals(5)
     //   .where('difficulty')
     //   .equals('easy');
-
-    // EXECUTE QUERY
-    const tours = await Tour.find(query);
 
     // SEND RESPONSE
     res.status(200).json({
