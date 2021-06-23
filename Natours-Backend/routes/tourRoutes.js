@@ -8,6 +8,11 @@ const router = express.Router();
 //// Param Middleware //// (for specifc routes parameters) -previous check ID validation
 // router.param('id', tourController.checkID);
 
+//// Making the API Better: Aliasing ////  = popular resources
+router
+  .route('/top-5-cheap')
+  .get(tourController.aliasTopTours, tourController.getAllTours);
+
 router
   .route('/')
   .get(tourController.getAllTours)
